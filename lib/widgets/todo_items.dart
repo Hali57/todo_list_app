@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/model/todo.dart';
 
+
 class ToDoItem extends StatelessWidget {
   final ToDo todo; // The ToDo object associated with this item
   final Function(ToDo) onToDoChanged; // Callback function for task completion status change
@@ -74,4 +75,5 @@ class ToDoItem extends StatelessWidget {
       ),
     );
   }
+
 }

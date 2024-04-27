@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/model/todo.dart'; // Import ToDo model class
 import 'package:todo_list/widgets/todo_items.dart'; // Import ToDoItem widget
 import 'package:url_launcher/url_launcher.dart';
+
+
+_launchURL() async {
+   final Uri _url = Uri.parse('https://www.indeed.com/career-advice/career-development/managing-to-do-list');
+   if (!await launchUrl(_url,mode: LaunchMode.externalApplication)) {
+        throw Exception('Could not launch $_url');
+    }
+}
+
 // Enumeration to represent different task categories
 enum TaskCategory {
   all,
@@ -179,7 +188,7 @@ class _TasksScreenState extends State<TasksScreen> {
             ListTile(
               title: Text("Help"),
               leading: Icon(Icons.help_center),
-              onTap:()=> launch()
+             onTap: ()=> _launchURL(),
             ),
             ListTile(
               title: Text("Logout"),
@@ -200,9 +209,15 @@ class _TasksScreenState extends State<TasksScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: TextField(
-                onChanged: (keyword) {
-                  // Implement search functionality if needed
-                },
+                  onChanged: (keyword) {
+                        if (keyword.isNotEmpty) {
+                          _foundToDo = todosList.where((todo) => todo.todoText.toLowerCase().contains(keyword.toLowerCase())).toList();
+                        } else {
+                          _updateTasks(); // Reset _foundToDo to all todos if search bar is empty
+                        }
+                        setState(() {});
+                      },
+
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(0),
                   prefixIcon: Icon(
